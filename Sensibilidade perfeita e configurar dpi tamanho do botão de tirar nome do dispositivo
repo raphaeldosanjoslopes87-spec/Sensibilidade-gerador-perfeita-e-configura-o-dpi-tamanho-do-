@@ -1,0 +1,90 @@
+Crie um aplicativo web chamado "Sensi Pro FF".
+
+OBJETIVO:
+Criar um gerador de configurações de sensibilidade para Free Fire, personalizado pelo modelo do dispositivo. O aplicativo deve gerar configurações equilibradas para facilitar a mira e aumentar a consistência dos tiros na cabeça, sem prometer "full vermelho" garantido.
+
+TECNOLOGIAS:
+- HTML5
+- CSS3
+- JavaScript puro
+- Tudo funcionando localmente, sem backend
+- Design responsivo para celular
+
+TELA PRINCIPAL:
+1. Título: 🎯 SENSI PRO FF
+2. Campo para selecionar o dispositivo:
+   - Motorola Moto G 5G Plus
+   - Motorola Moto G54
+   - Motorola Moto G84
+   - Samsung Galaxy A14
+   - Samsung Galaxy A24
+   - Samsung Galaxy A34
+   - Samsung Galaxy A54
+   - Xiaomi Redmi Note 12
+   - Xiaomi Redmi Note 13
+   - POCO X5 Pro
+   - iPhone
+   - Outro dispositivo
+
+3. Campo "Modelo personalizado" para o usuário digitar qualquer dispositivo.
+
+4. Campo "Estilo de mira":
+   - Equilibrada
+   - Precisa
+   - Alta velocidade
+   - Controle de recoil
+
+5. Gerar automaticamente:
+   - Sensibilidade Geral
+   - Red Dot
+   - Mira 2x
+   - Mira 4x
+   - Mira AWM
+   - Mira Livre
+   - DPI recomendado
+   - Tamanho do botão de disparo
+   - Posição sugerida do botão
+   - Taxa de toque/touch, quando aplicável
+
+6. Criar um botão:
+   🔥 GERAR MINHA SENSI
+
+7. Depois de gerar, mostrar um cartão:
+   "CONFIGURAÇÃO RECOMENDADA"
+
+8. Adicionar botões:
+   📋 COPIAR CONFIGURAÇÃO
+   🔄 GERAR NOVAMENTE
+   📱 NOVO DISPOSITIVO
+
+REGRAS:
+- A sensibilidade máxima deve respeitar o limite atual configurado no aplicativo/jogo.
+- Nunca afirmar que uma configuração garante headshot ou "full vermelho".
+- As configurações devem ser apresentadas como recomendações para teste e ajuste.
+- O algoritmo deve considerar o modelo do aparelho e o estilo escolhido.
+- Para dispositivos diferentes, gerar valores diferentes.
+- Evitar configurações absurdamente altas que prejudiquem o controle.
+
+VISUAL:
+- Tema dark gamer
+- Fundo preto
+- Detalhes em vermelho
+- Cards com efeito neon
+- Botões grandes para celular
+- Animações suaves
+- Interface moderna
+- Responsivo para telas pequenas
+- Fonte gamer
+- Ícones usando emoji ou SVG
+
+EXTRA:
+Criar uma seção "Meus dispositivos" usando localStorage para salvar as configurações geradas.
+Criar histórico das últimas 10 configurações.
+Adicionar botão para apagar histórico.
+Tudo deve funcionar sem servidor.
+
+ENTREGUE:
+- index.html completo
+- style.css completo
+- script.js completo
+- Código organizado e pronto para publicar no GitHub Pages.
