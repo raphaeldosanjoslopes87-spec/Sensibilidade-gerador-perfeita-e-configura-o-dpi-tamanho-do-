@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>SensiX FF — Gerador de Sensibilidade</title>
+  <meta name="description" content="Gerador de sensibilidade para Free Fire com presets equilibrados, DPI e tamanho do botão de tiro.">
+  <meta name="theme-color" content="#090909">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, #241010 0%, #090909 42%, #050505 100%);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 25px 15px;
+      text-align: center;
+      border-bottom: 1px solid #292929;
+      background: rgba(5, 5, 5, 0.9);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #ff3030;
+      text-shadow: 0 0 18px rgba(255, 40, 40, 0.5);
+    }
+
+    .subtitle {
+      margin-top: 7px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    main {
+      width: min(920px, 94%);
+      margin: 25px auto 50px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 7vw, 48px);
+      margin-bottom: 10px;
+    }
+
+    .hero h1 span {
+      color: #ff3030;
+    }
+
+    .hero p {
+      color: #aaa;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: rgba(17, 17, 17, 0.95);
+      border: 1px solid #292929;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.35);
+    }
+
+    .card h2 {
+      font-size: 19px;
+      margin-bottom: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .field {
+      background: #0d0d0d;
+      border: 1px solid #292929;
+      border-radius: 13px;
+      padding: 14px;
+    }
+
+    label {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      color: #ddd;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    label span {
+      color: #ff4040;
+    }
+
+    select,
+    input {
+      width: 100%;
+      border: 1px solid #333;
+      background: #171717;
+      color: white;
+      padding: 13px;
+      border-radius: 10px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    select:focus,
+    input:focus {
+      border-color: #ff3030;
+    }
+
+    .presets {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      color: white;
+      font-weight: 800;
+      border-radius: 11px;
+      padding: 14px;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    .preset {
+      background: #202020;
+      border: 1px solid #343434;
+    }
+
+    .preset.active,
+    .primary {
+      background: linear-gradient(135deg, #ff3030, #a90000);
+      box-shadow: 0 8px 22px rgba(255, 0, 0, .2);
+    }
+
+    .generate {
+      width: 100%;
+      margin-top: 18px;
+      padding: 17px;
+      font-size: 17px;
+      background: linear-gradient(135deg, #ff3030, #b00000);
+    }
+
+    .result {
+      display: none;
+    }
+
+    .result.show {
+      display: block;
+      animation: aparecer .35s ease;
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .badge {
+      background: #241010;
+      color: #ff4545;
+      border: 1px solid #5c2020;
+      border-radius: 30px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .settings {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .setting {
+      background: #0c0c0c;
+      border: 1px solid #292929;
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .setting small {
+      display: block;
+      color: #888;
+      margin-bottom: 5px;
+    }
+
+    .setting strong {
+      font-size: 24px;
+      color: #ff3b3b;
+    }
+
+    .tips {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #111;
+      border-left: 3px solid #ff3030;
+      color: #bbb;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .secondary {
+      background: #222;
+      border: 1px solid #383838;
+    }
+
+    .danger {
+      background: #301010;
+      border: 1px solid #5c2222;
+    }
+
+    footer {
+      text-align: center;
+      color: #666;
+      padding: 30px 15px;
+      border-top: 1px solid #202020;
+      font-size: 13px;
+    }
+
+    .notice {
+      color: #888;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 650px) {
+      .grid,
+      .settings,
+      .presets,
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .logo {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🔥 SENSIX FF</div>
+  <div class="subtitle">Gerador de Sensibilidade • Dark Gamer</div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <h1>Gere sua <span>Sensi</span></h1>
+    <p>
+      Escolha seu estilo, aparelho e perfil para gerar uma configuração
+      equilibrada para testar no Free Fire.
+    </p>
+  </section>
+
+  <section class="card">
+
+    <h2>🎯 Configuração</h2>
+
+    <div class="grid">
+
+      <div class="field">
+        <label>📱 Dispositivo</label>
+        <select id="device">
+          <option value="android">Android</option>
+          <option value="iphone">iPhone</option>
+          <option value="tablet">Tablet</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>⚡ Estilo</label>
+        <select id="style">
+          <option value="balanced">Equilibrada</option>
+          <option value="red">Full Vermelho</option>
+          <option value="precision">Precisão</option>
+          <option value="control">Controle</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>🎮 Experiência</label>
+        <select id="experience">
+          <option value="beginner">Iniciante</option>
+          <option value="intermediate" selected>Intermediário</option>
+          <option value="advanced">Avançado</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>📐 DPI</label>
+        <input id="dpi" type="number" min="300" max="800" value="440">
+      </div>
+
+    </div>
+
+    <button class="generate" onclick="generateSensi()">
+      ⚡ GERAR SENSIBILIDADE
+    </button>
+
+    <div class="notice">
+      A configuração é uma sugestão inicial. Ajuste no treinamento de acordo
+      com sua preferência e aparelho.
+    </div>
+
+  </section>
+
+  <section class="card">
+    <h2>🔥 Presets rápidos</h2>
+
+    <div class="presets">
+
+      <button class="preset active" onclick="setPreset('balanced', this)">
+        ⚖️ Equilibrada
+      </button>
+
+      <button class="preset" onclick="setPreset('red', this)">
+        🔴 Full Vermelho
+      </button>
+
+      <button class="preset" onclick="setPreset('precision', this)">
+        🎯 Precisão
+      </button>
+
+      <button class="preset" onclick="setPreset('control', this)">
+        🕹️ Controle
+      </button>
+
+    </div>
+  </section>
+
+  <section id="result" class="card result">
+
+    <div class="result-header">
+      <h2>🔥 Sua configuração</h2>
+      <div class="badge" id="profileName">EQUILIBRADA</div>
+    </div>
+
+    <div class="settings">
+
+      <div class="setting">
+        <small>Geral</small>
+        <strong id="general">--</strong>
+      </div>
+
+      <div class="setting">
+        <small>Ponto Vermelho</small>
+        <strong id="redDot">--</strong>
+      </div>
+
+      <div class="setting">
+        <small>Mira 2x</small>
+        <strong id="scope2x">--</strong>
+      </div>
+
+      <div class="setting">
+        <small>Mira 4x</small>
+        <strong id="scope4x">--</strong>
+      </div>
+
+      <div class="setting">
+        <small>Mira AWM</small>
+        <strong id="awm">--</strong>
+      </div>
+
+      <div class="setting">
+        <small>Câmera/Livre</small>
+        <strong id="freeLook">--</strong>
+      </div>
+
+      <div class="setting">
+        <small>DPI</small>
+        <strong id="resultDpi">--</strong>
+      </div>
+
+      <div class="setting">
+        <small>Botão de tiro</small>
+        <strong id="fireButton">--</strong>
+      </div>
+
+    </div>
+
+    <div class="tips" id="tips">
+      Configure e teste sua sensibilidade no campo de treinamento.
+    </div>
+
+    <div class="actions">
+      <button class="primary" onclick="copyResult()">
+        📋 COPIAR
+      </button>
+
+      <button class="secondary" onclick="generateSensi()">
+        🔄 GERAR NOVAMENTE
+      </button>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  SensiX FF © 2026 — Ferramenta independente de configuração.
+</footer>
+
+<script>
+
+  let currentPreset = "balanced";
+
+  const presets = {
+
+    balanced: {
+      name: "EQUILIBRADA",
+      general: 175,
+      redDot: 165,
+      scope2x: 155,
+      scope4x: 140,
+      awm: 85,
+      freeLook: 180,
+      fireButton: 48,
+      tip: "Perfil equilibrado para quem quer combinar controle da mira e velocidade de puxada."
+    },
+
+    red: {
+      name: "FULL VERMELHO",
+      general: 195,
+      redDot: 185,
+      scope2x: 175,
+      scope4x: 155,
+      awm: 90,
+      freeLook: 190,
+      fireButton: 52,
+      tip: "Perfil mais rápido para facilitar movimentos de arrasto. Se a mira passar do alvo, reduza a Geral e o Ponto Vermelho."
+    },
+
+    precision: {
+      name: "PRECISÃO",
+      general: 165,
+      redDot: 150,
+      scope2x: 140,
+      scope4x: 125,
+      awm: 75,
+      freeLook: 170,
+      fireButton: 45,
+      tip: "Perfil focado em movimentos mais controlados e mira mais estável."
+    },
+
+    control: {
+      name: "CONTROLE",
+      general: 155,
+      redDot: 145,
+      scope2x: 135,
+      scope4x: 120,
+      awm: 70,
+      freeLook: 160,
+      fireButton: 43,
+      tip: "Perfil mais conservador para quem prefere reduzir movimentos bruscos."
+    }
+
+  };
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, Math.round(value)));
+  }
+
+  function setPreset(preset, button) {
+
+    currentPreset = preset;
+
+    document.querySelectorAll(".preset").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    document.getElementById("style").value = preset;
+
+    generateSensi();
+  }
+
+  function generateSensi() {
+
+    const device = document.getElementById("device").value;
+    const experience = document.getElementById("experience").value;
+
+    let dpi = parseInt(document.getElementById("dpi").value);
+
+    if (!dpi || dpi < 300) dpi = 300;
+    if (dpi > 800) dpi = 800;
+
+    document.getElementById("dpi").value = dpi;
+
+    const style = document.getElementById("style").value;
+
+    currentPreset = style;
+
+    const base = presets[currentPreset];
+
+    let modifier = 0;
+
+    if (experience === "beginner") {
+      modifier = -8;
+    }
+
+    if (experience === "advanced") {
+      modifier = 5;
+    }
+
+    /*
+      O DPI é usado apenas como pequeno ajuste de recomendação.
+      Isso não altera as configurações do aparelho automaticamente.
+    */
+    let dpiModifier = 0;
+
+    if (dpi >= 500) dpiModifier = -3;
+    if (dpi <= 380) dpiModifier = 3;
+
+    if (device === "iphone") {
+      dpiModifier = 0;
+    }
+
+    const result = {
+      general: clamp(base.general + modifier + dpiModifier, 0, 200),
+      redDot: clamp(base.redDot + modifier + dpiModifier, 0, 200),
+      scope2x: clamp(base.scope2x + modifier, 0, 200),
+      scope4x: clamp(base.scope4x + modifier, 0, 200),
+      awm: clamp(base.awm + modifier, 0, 200),
+      freeLook: clamp(base.freeLook + modifier, 0, 200),
+      fireButton: clamp(base.fireButton, 30, 65)
+    };
+
+    document.getElementById("general").textContent = result.general;
+    document.getElementById("redDot").textContent = result.redDot;
+    document.getElementById("scope2x").textContent = result.scope2x;
+    document.getElementById("scope4x").textContent = result.scope4x;
+    document.getElementById("awm").textContent = result.awm;
+    document.getElementById("freeLook").textContent = result.freeLook;
+    document.getElementById("resultDpi").textContent = dpi;
+    document.getElementById("fireButton").textContent =
+      result.fireButton + "%";
+
+    document.getElementById("profileName").textContent = base.name;
+
+    let extraTip = "";
+
+    if (dpi >= 500) {
+      extraTip = " Como seu DPI está alto, experimente movimentos menores no arrasto.";
+    } else if (dpi <= 380) {
+      extraTip = " Com DPI mais baixo, movimentos um pouco maiores podem ser necessários.";
+    }
+
+    document.getElementById("tips").textContent =
+      "💡 " + base.tip + extraTip;
+
+    document.getElementById("result").classList.add("show");
+
+    document.getElementById("result")
+      .scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  async function copyResult() {
+
+    const text = `
+🔥 SENSIX FF — CONFIGURAÇÃO
+
+Perfil: ${document.getElementById("profileName").textContent}
+
+🎯 Geral: ${document.getElementById("general").textContent}
+🔴 Ponto Vermelho: ${document.getElementById("redDot").textContent}
+🔭 Mira 2x: ${document.getElementById("scope2x").textContent}
+🔭 Mira 4x: ${document.getElementById("scope4x").textContent}
+🎯 Mira AWM: ${document.getElementById("awm").textContent}
+👀 Câmera/Livre: ${document.getElementById("freeLook").textContent}
+
+📱 DPI: ${document.getElementById("resultDpi").textContent}
+🔘 Botão de tiro: ${document.getElementById("fireButton").textContent}
+
+Gerado pelo SensiX FF.
+    `.trim();
+
+    try {
+
+      await navigator.clipboard.writeText(text);
+
+      const button = event.target;
+      const oldText = button.textContent;
+
+      button.textContent = "✅ COPIADO!";
+
+      setTimeout(() => {
+        button.textContent = oldText;
+      }, 1500);
+
+    } catch (error) {
+
+      alert("Não foi possível copiar automaticamente. Selecione e copie a configuração.");
+
+    }
+
+  }
+
+  // Gera uma configuração inicial ao abrir a página.
+  window.addEventListener("load", () => {
+    generateSensi();
+  });
+
+</script>
+
+</body>
+  </html>
