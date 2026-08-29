@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="Gerador de sensibilidade equilibrada para Free Fire. Escolha seu celular e gere sua configuração.">
+
+  <title>SENSI FF — Gerador de Sensibilidade</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, #260000 0%, #0b0000 35%, #050505 75%);
+      color: white;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 900px;
+      margin: auto;
+      padding: 25px 0 50px;
+    }
+
+    header {
+      text-align: center;
+      padding: 25px 10px;
+    }
+
+    .logo {
+      font-size: 42px;
+      font-weight: 900;
+      color: #ff2020;
+      text-shadow:
+        0 0 10px #ff0000,
+        0 0 25px #ff0000;
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: #aaa;
+      font-size: 15px;
+    }
+
+    .card {
+      background: rgba(15, 15, 15, 0.96);
+      border: 1px solid #3b1111;
+      border-radius: 18px;
+      padding: 22px;
+      margin-top: 20px;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.12);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #ddd;
+      font-weight: bold;
+    }
+
+    select {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #4a1818;
+      background: #111;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    select:focus {
+      border-color: #ff2020;
+    }
+
+    .generate {
+      width: 100%;
+      margin-top: 20px;
+      padding: 17px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #b40000, #ff2020);
+      color: white;
+      font-size: 17px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 0 18px rgba(255, 0, 0, 0.35);
+      transition: 0.2s;
+    }
+
+    .generate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 28px rgba(255, 0, 0, 0.55);
+    }
+
+    .result {
+      display: none;
+    }
+
+    .device-title {
+      text-align: center;
+      color: #ff3333;
+      font-size: 22px;
+      margin-bottom: 5px;
+    }
+
+    .profile {
+      text-align: center;
+      color: #999;
+      margin-bottom: 20px;
+    }
+
+    .settings {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .setting {
+      background: #0b0b0b;
+      border: 1px solid #2d2d2d;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .setting-name {
+      display: block;
+      color: #aaa;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .setting-value {
+      color: #ff2929;
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .highlight {
+      border-color: #7d1111;
+      box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.06);
+    }
+
+    .copy {
+      width: 100%;
+      padding: 15px;
+      margin-top: 18px;
+      border-radius: 12px;
+      border: 1px solid #4d1717;
+      background: #160606;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .copy:hover {
+      background: #260909;
+    }
+
+    .info {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #0b0b0b;
+      border-left: 4px solid #ff2020;
+      color: #aaa;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      color: #666;
+      font-size: 12px;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 600px) {
+      .logo {
+        font-size: 32px;
+      }
+
+      .settings {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <header>
+      <div class="logo">SENSI FF</div>
+      <div class="subtitle">
+        Gerador de Sensibilidade • Equilibrada • Full Vermelho 🔥
+      </div>
+    </header>
+
+    <div class="card">
+
+      <label for="device">📱 Escolha seu celular</label>
+
+      <select id="device">
+        <option value="motoG5GPlus">Motorola Moto G 5G Plus</option>
+        <option value="motoG54">Motorola Moto G54</option>
+        <option value="motoG84">Motorola Moto G84</option>
+        <option value="motoG85">Motorola Moto G85</option>
+        <option value="motoG73">Motorola Moto G73</option>
+
+        <option value="samsungA14">Samsung Galaxy A14</option>
+        <option value="samsungA24">Samsung Galaxy A24</option>
+        <option value="samsungA34">Samsung Galaxy A34</option>
+        <option value="samsungA54">Samsung Galaxy A54</option>
+
+        <option value="redmi12">Xiaomi Redmi Note 12</option>
+        <option value="redmi13">Xiaomi Redmi Note 13</option>
+        <option value="pocoX5">POCO X5</option>
+        <option value="pocoX6">POCO X6</option>
+
+        <option value="iphone11">iPhone 11</option>
+        <option value="iphone12">iPhone 12</option>
+        <option value="iphone13">iPhone 13</option>
+        <option value="iphone14">iPhone 14</option>
+        <option value="iphone15">iPhone 15</option>
+      </select>
+
+      <button class="generate" onclick="gerarSensi()">
+        🎯 GERAR MINHA SENSI
+      </button>
+
+    </div>
+
+    <div class="card result" id="result">
+
+      <div class="device-title" id="deviceName">
+        Moto G 5G Plus
+      </div>
+
+      <div class="profile">
+        Perfil: 🔥 Equilibrado / Full Vermelho
+      </div>
+
+      <div class="settings">
+
+        <div class="setting highlight">
+          <span class="setting-name">🔴 Geral</span>
+          <span class="setting-value" id="geral">190</span>
+        </div>
+
+        <div class="setting highlight">
+          <span class="setting-name">🎯 Ponto Vermelho</span>
+          <span class="setting-value" id="redDot">185</span>
+        </div>
+
+        <div class="setting">
+          <span class="setting-name">🔍 Mira 2x</span>
+          <span class="setting-value" id="scope2x">175</span>
+        </div>
+
+        <div class="setting">
+          <span class="setting-name">🔭 Mira 4x</span>
+          <span class="setting-value" id="scope4x">160</span>
+        </div>
+
+        <div class="setting">
+          <span class="setting-name">🎯 Mira AWM</span>
+          <span class="setting-value" id="awm">80</span>
+        </div>
+
+        <div class="setting">
+          <span class="setting-name">👁️ Câmera Livre</span>
+          <span class="setting-value" id="freeLook">190</span>
+        </div>
+
+        <div class="setting highlight">
+          <span class="setting-name">🔘 Tamanho do Botão</span>
+          <span class="setting-value" id="button">48%</span>
+        </div>
+
+        <div class="setting highlight">
+          <span class="setting-name">📱 DPI</span>
+          <span class="setting-value" id="dpi">440</span>
+        </div>
+
+      </div>
+
+      <button class="copy" onclick="copiarSensi()">
+        📋 COPIAR CONFIGURAÇÃO
+      </button>
+
+      <div class="info">
+        ⚠️ <strong>Importante:</strong> estes valores são sugestões de configuração.
+        A sensibilidade ideal depende do aparelho, taxa de atualização,
+        controles e preferência de cada jogador. Teste no treinamento e ajuste
+        aos poucos.
+      </div>
+
+    </div>
+
+    <footer>
+      SENSI FF © 2026 — Gerador de Sensibilidade
+    </footer>
+
+  </div>
+
+  <script>
+
+    const aparelhos = {
+
+      motoG5GPlus: {
+        nome: "Motorola Moto G 5G Plus",
+        geral: 190,
+        red: 185,
+        x2: 175,
+        x4: 160,
+        awm: 80,
+        livre: 190,
+        botao: 48,
+        dpi: 440
+      },
+
+      motoG54: {
+        nome: "Motorola Moto G54",
+        geral: 188,
+        red: 183,
+        x2: 173,
+        x4: 158,
+        awm: 78,
+        livre: 188,
+        botao: 48,
+        dpi: 430
+      },
+
+      motoG84: {
+        nome: "Motorola Moto G84",
+        geral: 190,
+        red: 185,
+        x2: 175,
+        x4: 160,
+        awm: 80,
+        livre: 190,
+        botao: 47,
+        dpi: 440
+      },
+
+      motoG85: {
+        nome: "Motorola Moto G85",
+        geral: 192,
+        red: 187,
+        x2: 177,
+        x4: 162,
+        awm: 82,
+        livre: 192,
+        botao: 47,
+        dpi: 450
+      },
+
+      motoG73: {
+        nome: "Motorola Moto G73",
+        geral: 188,
+        red: 183,
+        x2: 172,
+        x4: 157,
+        awm: 78,
+        livre: 188,
+        botao: 49,
+        dpi: 430
+      },
+
+      samsungA14: {
+        nome: "Samsung Galaxy A14",
+        geral: 185,
+        red: 180,
+        x2: 170,
+        x4: 155,
+        awm: 75,
+        livre: 185,
+        botao: 50,
+        dpi: 420
+      },
+
+      samsungA24: {
+        nome: "Samsung Galaxy A24",
+        geral: 188,
+        red: 183,
+        x2: 173,
+        x4: 158,
+        awm: 78,
+        livre: 188,
+        botao: 49,
+        dpi: 430
+      },
+
+      samsungA34: {
+        nome: "Samsung Galaxy A34",
+        geral: 190,
+        red: 185,
+        x2: 175,
+        x4: 160,
+        awm: 80,
+        livre: 190,
+        botao: 48,
+        dpi: 440
+      },
+
+      samsungA54: {
+        nome: "Samsung Galaxy A54",
+        geral: 192,
+        red: 187,
+        x2: 177,
+        x4: 162,
+        awm: 82,
+        livre: 192,
+        botao: 47,
+        dpi: 450
+      },
+
+      redmi12: {
+        nome: "Xiaomi Redmi Note 12",
+        geral: 190,
+        red: 185,
+        x2: 175,
+        x4: 160,
+        awm: 80,
+        livre: 190,
+        botao: 48,
+        dpi: 440
+      },
+
+      redmi13: {
+        nome: "Xiaomi Redmi Note 13",
+        geral: 192,
+        red: 187,
+        x2: 177,
+        x4: 162,
+        awm: 82,
+        livre: 192,
+        botao: 47,
+        dpi: 450
+      },
+
+      pocoX5: {
+        nome: "POCO X5",
+        geral: 194,
+        red: 189,
+        x2: 179,
+        x4: 164,
+        awm: 84,
+        livre: 194,
+        botao: 46,
+        dpi: 460
+      },
+
+      pocoX6: {
+        nome: "POCO X6",
+        geral: 196,
+        red: 191,
+        x2: 181,
+        x4: 166,
+        awm: 86,
+        livre: 196,
+        botao: 46,
+        dpi: 470
+      },
+
+      iphone11: {
+        nome: "iPhone 11",
+        geral: 185,
+        red: 180,
+        x2: 170,
+        x4: 155,
+        awm: 75,
+        livre: 185,
+        botao: 50,
+        dpi: "Padrão"
+      },
+
+      iphone12: {
+        nome: "iPhone 12",
+        geral: 188,
+        red: 183,
+        x2: 173,
+        x4: 158,
+        awm: 78,
+        livre: 188,
+        botao: 49,
+        dpi: "Padrão"
+      },
+
+      iphone13: {
+        nome: "iPhone 13",
+        geral: 190,
+        red: 185,
+        x2: 175,
+        x4: 160,
+        awm: 80,
+        livre: 190,
+        botao: 48,
+        dpi: "Padrão"
+      },
+
+      iphone14: {
+        nome: "iPhone 14",
+        geral: 192,
+        red: 187,
+        x2: 177,
+        x4: 162,
+        awm: 82,
+        livre: 192,
+        botao: 48,
+        dpi: "Padrão"
+      },
+
+      iphone15: {
+        nome: "iPhone 15",
+        geral: 194,
+        red: 189,
+        x2: 179,
+        x4: 164,
+        awm: 84,
+        livre: 194,
+        botao: 47,
+        dpi: "Padrão"
+      }
+
+    };
+
+
+    function gerarSensi() {
+
+      const aparelhoSelecionado =
+        document.getElementById("device").value;
+
+      const dados = aparelhos[aparelhoSelecionado];
+
+      document.getElementById("deviceName").textContent =
+        dados.nome;
+
+      document.getElementById("geral").textContent =
+        dados.geral;
+
+      document.getElementById("redDot").textContent =
+        dados.red;
+
+      document.getElementById("scope2x").textContent =
+        dados.x2;
+
+      document.getElementById("scope4x").textContent =
+        dados.x4;
+
+      document.getElementById("awm").textContent =
+        dados.awm;
+
+      document.getElementById("freeLook").textContent =
+        dados.livre;
+
+      document.getElementById("button").textContent =
+        dados.botao + "%";
+
+      document.getElementById("dpi").textContent =
+        dados.dpi;
+
+      document.getElementById("result").style.display =
+        "block";
+
+      document.getElementById("result").scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+
+
+    function copiarSensi() {
+
+      const aparelho =
+        document.getElementById("deviceName").textContent;
+
+      const texto =
+`🔥 SENSI FF — CONFIGURAÇÃO
+
+📱 Aparelho: ${aparelho}
+
+🔴 Geral: ${document.getElementById("geral").textContent}
+🎯 Ponto Vermelho: ${document.getElementById("redDot").textContent}
+🔍 Mira 2x: ${document.getElementById("scope2x").textContent}
+🔭 Mira 4x: ${document.getElementById("scope4x").textContent}
+🎯 Mira AWM: ${document.getElementById("awm").textContent}
+👁️ Câmera Livre: ${document.getElementById("freeLook").textContent}
+🔘 Botão: ${document.getElementById("button").textContent}
+📱 DPI: ${document.getElementById("dpi").textContent}
+
+🔥 Perfil: Equilibrado / Full Vermelho`;
+
+      navigator.clipboard.writeText(texto)
+        .then(() => {
+          alert("✅ Configuração copiada!");
+        })
+        .catch(() => {
+          alert("❌ Não foi possível copiar automaticamente.");
+        });
+
+    }
+
+  </script>
+
+</body>
+</html>
